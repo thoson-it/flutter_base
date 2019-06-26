@@ -33,7 +33,7 @@ class MovieCell extends StatelessWidget {
                 _onPressed(_movieEntity);
               }
             },
-            child: null,
+            child: Container(),
           ),
         ],
       ),

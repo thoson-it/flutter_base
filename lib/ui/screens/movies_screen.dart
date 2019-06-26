@@ -3,6 +3,7 @@ import 'package:flutter_base/blocs/movies_bloc.dart';
 import 'package:flutter_base/models/entity/movie_entity.dart';
 import 'package:flutter_base/models/enums/load_type.dart';
 import 'package:flutter_base/models/states/movies_state.dart';
+import 'package:flutter_base/ui/screens/movie_detail/movie_screen.dart';
 import 'package:flutter_base/ui/widgets/cells/loading_cell.dart';
 import 'package:flutter_base/ui/widgets/cells/movie_cell.dart';
 import 'package:flutter_base/ui/widgets/customs/reload_button_widget.dart';
@@ -53,6 +54,13 @@ class _MoviesScreenState extends State<MoviesScreen> {
         child: _buildBodyWidget(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+    _scrollController.dispose();
   }
 
   ///Build widget
@@ -163,5 +171,12 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
   /// Handler
 
-  void _handleSelectedMovie(MovieEntity movie) {}
+  void _handleSelectedMovie(MovieEntity movie) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieScreen(),
+      ),
+    );
+  }
 }
