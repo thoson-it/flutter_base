@@ -1,0 +1,1 @@
+enum DialogType { NOTIFICATION, SUCCESS, WARNING, ERROR }
