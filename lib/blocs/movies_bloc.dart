@@ -1,4 +1,5 @@
 import 'package:flutter_base/api/app_apis.dart';
+import 'package:flutter_base/database/file_manager.dart';
 import 'package:flutter_base/models/entity/movie_entity.dart';
 import 'package:flutter_base/models/enums/load_type.dart';
 import 'package:flutter_base/models/states/movies_state.dart';
@@ -63,6 +64,8 @@ class MoviesBloc extends BlocBase {
             _movies = response.dataList;
             if (_movies.isNotEmpty) {
               _onResponseMovies(MoviesLoaded(list: _movies));
+              //Write to disk
+              FileManager().writeMovies(_movies);
             } else {
               _onResponseMovies(MoviesEmpty());
             }

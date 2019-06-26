@@ -69,11 +69,4 @@ class Response<T extends BaseEntity> extends BaseEntity {
       print(stacktrace);
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['error_code'] = errorCode.getValue();
-    data['status'] = status ? 1 : 0;
-    return data;
-  }
 }

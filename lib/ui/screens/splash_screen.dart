@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_base/database/file_manager.dart';
 import 'package:flutter_base/ui/screens/movies_screen.dart';
 import 'package:flutter_base/utilities/app_colors.dart';
 
@@ -16,6 +17,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _openMoviesScreenWithAsync();
+    //
+    var movies = FileManager().readMovies().then((list) =>
+        print(list)
+    );
   }
 
   @override
