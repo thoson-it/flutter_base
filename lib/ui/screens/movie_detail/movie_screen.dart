@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/blocs/base/bloc_provider.dart';
+import 'package:flutter_base/blocs/movie_bloc.dart';
 import 'package:flutter_base/ui/screens/movie_detail/tabs/movie_first_tab.dart';
 import 'package:flutter_base/ui/screens/movie_detail/tabs/movie_second_tab.dart';
 import 'package:flutter_base/ui/screens/movie_detail/tabs/movie_third_tab.dart';
@@ -60,18 +62,21 @@ class _MovieScreenState extends State<MovieScreen>
   ///Build widget
   Widget _buildBodyWidget() {
     return Scaffold(
-      body: PageView(
-        children: [
-          new MovieFirstTab(),
-          new MovieSecondTab(),
-          new MovieThirdTab(),
-        ],
-        controller: _pageController,
-        onPageChanged: (index) {
-          if (_isPageCanChanged) {
-            _onPageChange(index);
-          }
-        },
+      body: BlocProvider(
+        bloc: MovieBloc(),
+        child: PageView(
+          children: [
+            new MovieFirstTab(),
+            new MovieSecondTab(),
+            new MovieThirdTab(),
+          ],
+          controller: _pageController,
+          onPageChanged: (index) {
+            if (_isPageCanChanged) {
+              _onPageChange(index);
+            }
+          },
+        ),
       ),
       bottomNavigationBar: SafeArea(
         child: TabBar(
