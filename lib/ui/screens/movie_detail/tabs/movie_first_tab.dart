@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/ui/widgets/customs/ribbon_widget.dart';
 
 class MovieFirstTab extends StatefulWidget {
   @override
@@ -19,7 +20,13 @@ class _MovieFirstTabState extends State<MovieFirstTab>
     // TODO: implement build
     return Scaffold(
       body: Container(
+        height: 200.0,
+        width: 500.0,
+        padding: EdgeInsets.all(50),
         color: Colors.red,
+        child: new CustomPaint(
+          foregroundPainter: RibbonWidget(cornerRadius: 10),
+        ),
       ),
     );
   }

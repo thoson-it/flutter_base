@@ -4,6 +4,7 @@ import 'package:flutter_base/ui/screens/movie_detail/tabs/movie_second_tab.dart'
 import 'package:flutter_base/ui/screens/movie_detail/tabs/movie_third_tab.dart';
 import 'package:flutter_base/utilities/app_colors.dart';
 import 'package:flutter_base/utilities/app_dimens.dart';
+import 'package:flutter_base/utilities/app_localizations.dart';
 
 class MovieScreen extends StatefulWidget {
   @override
@@ -40,7 +41,7 @@ class _MovieScreenState extends State<MovieScreen>
     return Scaffold(
       appBar: PreferredSize(
         child: AppBar(
-          title: Text('Movies'),
+          title: Text(AppLocalizations.of(context).text("movie_detail")),
         ),
         preferredSize: Size.fromHeight(AppDimens.appBarHeight),
       ),

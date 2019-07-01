@@ -17,10 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _openMoviesScreenWithAsync();
-    //
-    var movies = FileManager().readMovies().then((list) =>
-        print(list)
-    );
   }
 
   @override
