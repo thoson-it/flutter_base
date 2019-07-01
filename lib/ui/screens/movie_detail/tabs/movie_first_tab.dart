@@ -20,12 +20,19 @@ class _MovieFirstTabState extends State<MovieFirstTab>
     // TODO: implement build
     return Scaffold(
       body: Container(
-        height: 200.0,
-        width: 500.0,
-        padding: EdgeInsets.all(50),
         color: Colors.red,
-        child: new CustomPaint(
-          foregroundPainter: RibbonWidget(cornerRadius: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: 200,
+              width: 400,
+              padding: EdgeInsets.all(50),
+              child: new CustomPaint(
+                foregroundPainter: RibbonWidget(),
+              ),
+            )
+          ],
         ),
       ),
     );
