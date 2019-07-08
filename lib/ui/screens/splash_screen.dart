@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/database/file_manager.dart';
 import 'package:flutter_base/ui/screens/movies_screen.dart';
+import 'package:flutter_base/ui/screens/stone_tool/stone_tool_screen.dart';
 import 'package:flutter_base/utilities/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   ///
   void _openMoviesScreenWithAsync() async {
-    await new Future.delayed(const Duration(seconds: 2));
+    await new Future.delayed(const Duration(seconds: 0));
     _openMoviesScreen();
   }
 
@@ -49,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
     var result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MoviesScreen(),
+        builder: (context) => StoneToolScreen(),
       ),
     );
     //Todo: handle result here

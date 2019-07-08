@@ -52,6 +52,7 @@ dependencies:
   #  firebase_core: ^0.2.5
   #  firebase_messaging: ^4.0.0+3
   intl: ^0.15.8
+  animator: ^0.1.4
 
 dev_dependencies:
   flutter_test:
