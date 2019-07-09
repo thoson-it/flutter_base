@@ -9,54 +9,26 @@ class BraceletModel {
   List<StoneWidgetInfo> stones = List<StoneWidgetInfo>();
 
   bool addNewStone(StoneWidgetInfo stone) {
+    //List đã đầy
     if ((_getOccupyAngle() + stone.occupyAngle) > (2 * pi)) {
       //the circle full
       return false;
     }
-
-    var newStone = stone;
-//    var previousIndex = _getPreviousNearItemIndex(newStone);
-//    if (previousIndex < 0) {
-//      stones.add(newStone);
-//      return true;
-//    }
+    //Thực hiện add stone
     var newStoneIndex = _addStoneToList(stone);
-//    newStone.index = newStoneIndex;
-    //Add stone to list
-//    stones.insert(newStoneIndex, stone);
-    //Update index for each stone
-    for (int i = 0; i < stones.length; i++) {
-//      stones[i].index = i;
-      stones[i].oldAngleInParent = stones[i].angleInParent;
-    }
-    //Update angel in parent for each stone
-    var currentIndex = newStoneIndex;
-    for (int i = 0; i < stones.length; i++) {
-      //Lấy index của hạt kế tiếp để kiểm tra bị đè lên nhau
-      var previousStoneIndex =
-          currentIndex == 0 ? stones.length - 1 : currentIndex - 1;
-      if (_isStoneOverlapAnother(
-          stones[currentIndex], stones[previousStoneIndex])) {
-        //Update angle in parent
-        stones[currentIndex].angleInParent =
-            stones[previousStoneIndex].angleInParent +
-                (stones[currentIndex].occupyAngle +
-                        stones[previousStoneIndex].occupyAngle) /
-                    2.0;
-        if (stones[currentIndex].angleInParent > (2 * pi)) {
-          stones[currentIndex].angleInParent =
-              stones[currentIndex].angleInParent - (2 * pi);
-        }
-      } else {
-//        break;
-      }
-      currentIndex += 1;
-      if (currentIndex >= stones.length) currentIndex = 0;
-    }
+    //Update lại vị trí stone
+    _updateStonePosition(newStoneIndex);
     return true;
   }
 
-  void removeStoneAdIndex(StoneWidgetInfo stone) {}
+  void removeStoneAtIndex(StoneWidgetInfo stone) {}
+
+  bool _isFullItemIfAddNew(StoneWidgetInfo stone) {
+    if ((_getOccupyAngle() + stone.occupyAngle) > (2 * pi)) {
+      //the circle full
+      return false;
+    }
+  }
 
   ///Tính tổng góc đã bị chiếm giữ trên vòng bởi các hạt
   double _getOccupyAngle() {
@@ -68,51 +40,80 @@ class BraceletModel {
   }
 
   ///Chèn thêm stone vào list
+  ///Return position insert
   int _addStoneToList(StoneWidgetInfo stone) {
-    var newStone = stone;
-    var previousIndex = _getPreviousNearItemIndex(newStone);
     //Trường hợp danh sách trống
     if (stones.isEmpty) {
       stones.add(stone);
-      return stones.length - 1;
-    }
-    //Trường hợp nhiều hơn 1 phần tử thì previous index luôn là 0
-    if (newStone.angleInParent >= stones[previousIndex].angleInParent) {
-      stones.insert(previousIndex + 1, newStone);
-      return previousIndex + 1;
-    } else {
-      stones.insert(0, newStone);
       return 0;
     }
+    //Trường hợp insert vào đầu hoặc cuối list
+    if (stone.angleInParent <= stones.first.angleInParent) {
+      stones.insert(0, stone);
+      return 0;
+    }
+    if (stone.angleInParent >= stones.last.angleInParent) {
+      stones.add(stone);
+      return stones.length - 1;
+    }
+    //Trường hợp chèn vào giữa danh sách
+    var previousIndex = _getPreviousItemIndex(stone);
+    stones.insert(previousIndex + 1, stone);
+    return previousIndex + 1;
   }
 
   ///Lấy vị trí hạt ở trước
-  int _getPreviousNearItemIndex(StoneWidgetInfo stone) {
+  int _getPreviousItemIndex(StoneWidgetInfo stone) {
     if (stones.isEmpty) return -1;
     if (stones.length == 1) {
       return 0;
     }
+    if (stone.angleInParent < stones.first.angleInParent ||
+        stone.angleInParent > stones.last.angleInParent) {
+      return stones.length - 1;
+    }
     for (int i = 0; i < stones.length; i++) {
-      int nextIndex = i + 1;
-      if (nextIndex == stones.length) {
-        nextIndex = 0;
-      }
       var previousStone = stones[i];
-      var nextStone = stones[nextIndex];
+      var nextStone = stones[i + 1];
 
-      if (previousStone.angleInParent <= nextStone.angleInParent) {
-        if (stone.angleInParent >= previousStone.angleInParent &&
-            stone.angleInParent <= nextStone.angleInParent) {
-          return i;
-        }
-      } else {
-        if (stone.angleInParent <= previousStone.angleInParent ||
-            stone.angleInParent >= nextStone.angleInParent) {
-          return nextIndex;
-        }
+      if (stone.angleInParent >= previousStone.angleInParent &&
+          stone.angleInParent <= nextStone.angleInParent) {
+        return i;
       }
     }
     return -1;
+  }
+
+  ///Update lại vị trí stone
+  void _updateStonePosition(int startPosition) {
+    //Save old position
+    for (int i = 0; i < stones.length; i++) {
+      stones[i].oldAngleInParent = stones[i].angleInParent;
+    }
+    //Update angel in parent for each stone
+    var currentTrackingIndex = startPosition;
+    for (int i = 0; i < stones.length; i++) {
+      //Lấy index của hạt trước đó để kiểm tra bị đè lên nhau
+      var previousTrackingIndex = currentTrackingIndex == 0
+          ? stones.length - 1
+          : currentTrackingIndex - 1;
+      if (_isStoneOverlapAnother(
+          stones[currentTrackingIndex], stones[previousTrackingIndex])) {
+        //Update angle in parent
+        stones[currentTrackingIndex].angleInParent =
+            stones[previousTrackingIndex].angleInParent +
+                (stones[currentTrackingIndex].occupyAngle +
+                        stones[previousTrackingIndex].occupyAngle) /
+                    2.0;
+        //Kiểm tra vị trí được update vượt quá 2*pi
+        if (stones[currentTrackingIndex].angleInParent > (2 * pi)) {
+          stones[currentTrackingIndex].angleInParent =
+              stones[currentTrackingIndex].angleInParent - (2 * pi);
+        }
+      }
+      currentTrackingIndex += 1;
+      if (currentTrackingIndex >= stones.length) currentTrackingIndex = 0;
+    }
   }
 
   bool _isStoneOverlapAnother(StoneWidgetInfo first, StoneWidgetInfo second) {
@@ -126,13 +127,4 @@ class BraceletModel {
       return false;
     }
   }
-
-  ///Lấy vị trí hạt ở sau sẽ bị đè lên của
-//  int _getNextNeartItemIndex(StoneWidgetInfo stone) {
-//    return stones.indexWhere((item) {
-//      return ((item.angleInParent + item.occupyAngle) >
-//          (stone.angleInParent - stone.occupyAngle) &&
-//          item.angleInParent < stone.angleInParent);
-//    });
-//  }
 }
