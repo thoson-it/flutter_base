@@ -1,47 +1,80 @@
-import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter_base/models/entity/movie_entity.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
-  final String _moviesFileName = "movie.txt";
-
-  //Read data from the file
-  Future<List<MovieEntity>> readMovies() async {
+  ///Read data from the file path
+  Future<String> readFileByPath(String filePath) async {
     try {
-      final file = await _localMoviesFile;
-
-      // Read the file.
-      String contents = await file.readAsString();
-      var movieMap = json.decode(contents);
-      return (movieMap as List).map((json) => MovieEntity.fromJson(json))
-          .toList();
-    } catch (e) {
-      // If encountering an error, return 0.
-      return List<MovieEntity>();
+      final file = await getLocalFile(filePath);
+      return readFile(file);
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+      return null;
     }
   }
 
-  //Write data to the file
-  Future<File> writeMovies(List<MovieEntity> movies) async {
-    final file = await _localMoviesFile;
-    var movieMap = movies.map((entity) => entity.toJson()).toList();
-    var result = json.encode(movieMap).toString();
-    // Write the file.
-    return file.writeAsString('$result');
+  ///Read data from the file
+  Future<String> readFile(File file) async {
+    try {
+      if (file.existsSync()) {
+        // Read the file.
+        return file.readAsStringSync();
+      } else {
+        // File not exit
+        return null;
+      }
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+      return null;
+    }
   }
 
-  //Create a reference to the file location
-  Future<File> get _localMoviesFile async {
-    final path = await _localPath;
-    return File('$path/$_moviesFileName}');
+  ///Write design to the file
+  Future<File> writeFileByPath(String filePath, String content) async {
+    try {
+      final file = await getLocalFile(filePath);
+      return file.writeAsString(content);
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+      return null;
+    }
   }
 
-  //Find the correct local path
-  Future<String> get _localPath async {
+  ///Check is exist folder
+  ///Ex: isExitDirectory('dir/subdir')
+  Future<bool> isExitDirectory(String folderPath) async {
+    final String path = await getLocalPath();
+    return Directory('$path/$folderPath').existsSync();
+  }
+
+  ///Create folder
+  ///Ex: createDesignFolder('dir/subdir')
+  Future<Directory> createDirectory(String folderPath) async {
+    final String path = await getLocalPath();
+    return Directory('$path/$folderPath').create(recursive: true);
+  }
+
+  ///Delete file
+  ///Ex: deleteFile('folder/filename.type')
+  Future<void> deleteFile(String filePath) async {
+    final file = await getLocalFile(filePath);
+    file.deleteSync();
+  }
+
+  ///Get local file
+  ///
+  Future<File> getLocalFile(String filePath) async {
+    final path = await getLocalPath();
+    return File('$path/$filePath}');
+  }
+
+  ///Get local path
+  ///Return:
+  Future<String> getLocalPath() async {
     final directory = await getApplicationDocumentsDirectory();
-
     return directory.path;
   }
 }
