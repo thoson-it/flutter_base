@@ -46,12 +46,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
   ///Navigate
   void _openMoviesScreen() async {
-    var result = await Navigator.push(
+    ///Push replace
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => MoviesScreen(),
       ),
     );
+    ///Push normal
+//    var result = await Navigator.push(
+//      context,
+//      MaterialPageRoute(
+//        builder: (context) => MoviesScreen(),
+//      ),
+//    );
     //Todo: handle result here
   }
 }
