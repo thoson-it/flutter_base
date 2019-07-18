@@ -1,4 +1,4 @@
-import 'package:flutter_base/api/app_apis.dart';
+import 'package:flutter_base/api/app_api.dart';
 import 'package:flutter_base/models/entity/movie_entity.dart';
 import 'package:flutter_base/models/enums/load_type.dart';
 import 'package:flutter_base/models/states/movies_state.dart';
@@ -55,7 +55,7 @@ class MoviesBloc extends BlocBase {
         return;
     }
 
-    kAppApis.fetchMovies(page, kApiKey).then((response) {
+    appApi.fetchMovies(page, kApiKey).then((response) {
       if (response.status == true) {
         switch (loadType) {
           case LoadType.INITIAL:
