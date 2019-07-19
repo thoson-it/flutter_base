@@ -59,20 +59,6 @@ class _StoneToolWidgetState extends State<StoneToolWidget> {
               ),
             ),
             _stonesViewerWidget,
-            Container(
-              alignment: Alignment.bottomCenter,
-              height: 50,
-              child: Row(
-                children: <Widget>[
-                  RaisedButton(
-                      child: Text('Add'),
-                      onPressed: () {
-                        _stonesViewerWidget.state.addRandomStone();
-                      }),
-//                  ToolItemWidget(),
-                ],
-              ),
-            ),
             ToolItemWidget(
               callback: _handleAddItem,
             ),

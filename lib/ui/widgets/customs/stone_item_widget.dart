@@ -3,11 +3,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/models/entity/stone_widget_info.dart';
 
+typedef void OnStartDrag(int index);
+typedef void OnEndDrag(StoneWidgetInfo stoneWidgetInfo, Offset offset);
+
 class StoneItemWidget extends StatefulWidget {
   StoneWidgetInfo stoneWidgetInfo;
   double rotate;
+  OnStartDrag onStartDrag;
+  OnEndDrag onEndDrag;
 
-  StoneItemWidget(this.stoneWidgetInfo, {this.rotate});
+  StoneItemWidget(this.stoneWidgetInfo,
+      {this.rotate, this.onStartDrag, this.onEndDrag});
 
   @override
   State<StatefulWidget> createState() {
@@ -51,17 +57,23 @@ class _StoneItemWidgetState extends State<StoneItemWidget> {
         child: Container(
           width: widget.stoneWidgetInfo.radiusInApp * 2,
           height: widget.stoneWidgetInfo.radiusInApp * 2,
-          color: Colors.blue,
+          color: Colors.transparent,
         ),
       ),
       data: "Stone",
-      onDragStarted: () {},
+      onDragStarted: () {
+        if (widget.onStartDrag != null) {
+          widget.onStartDrag(widget.stoneWidgetInfo.index);
+        }
+      },
       onDragEnd: (DraggableDetails details) {
 //        print('Canceled: ${details.offset}');
       },
       onDragCompleted: () {},
       onDraggableCanceled: (Velocity velocity, Offset offset) {
-//        print('Canceled: $velocity === $offset');
+        if (widget.onStartDrag != null) {
+          widget.onEndDrag(widget.stoneWidgetInfo, offset);
+        }
       },
     );
   }
