@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   ///Navigate
   void _openMoviesScreen() async {
-    var result = await Navigator.push(
+    var result = await Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => StoneToolScreen(),

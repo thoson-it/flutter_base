@@ -76,27 +76,27 @@ class _StoneToolWidgetState extends State<StoneToolWidget> {
             ToolItemWidget(
               callback: _handleAddItem,
             ),
-            Container(
-              child: DragTarget(
-                builder: (context, List<int> candidateData, rejectedData) {
-//                  print('candidateData $candidateData');
-                  return Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                  );
-                },
-                onWillAccept: (data) {
-//                  print('onWillAccept $data');
-                  return true;
-                },
-                onAccept: (data) {
-//                  print('onAccept $data');
-                },
-                onLeave: (data) {
-//                  print('onLeave $data');
-                },
-              ),
-            ),
+//            Container(
+//              child: DragTarget(
+//                builder: (context, List<int> candidateData, rejectedData) {
+////                  print('candidateData $candidateData');
+//                  return Container(
+//                    width: double.infinity,
+//                    height: double.infinity,
+//                  );
+//                },
+//                onWillAccept: (data) {
+////                  print('onWillAccept $data');
+//                  return true;
+//                },
+//                onAccept: (data) {
+////                  print('onAccept $data');
+//                },
+//                onLeave: (data) {
+////                  print('onLeave $data');
+//                },
+//              ),
+//            ),
           ],
         ),
       );
@@ -113,7 +113,10 @@ class _StoneToolWidgetState extends State<StoneToolWidget> {
         offset.dx - toolPosition.dx - (toolSize.width / 2) + 20.0,
         offset.dy - toolPosition.dy - (toolSize.height / 2) + 20.0);
     double angle = atan2(offsetToCenter.dy, offsetToCenter.dx);
-    print('SonLT2 ${offsetToCenter.dx} : ${offsetToCenter.dy}');
+//    print('SonLT2 ${offsetToCenter.dx} : ${offsetToCenter.dy}');
+    if(angle < 0) {
+      angle = 2 * pi + angle;
+    }
     _stonesViewerWidget.state.addRandomStoneWithAngel(angle);
   }
 }
