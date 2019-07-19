@@ -57,7 +57,7 @@ class _StonesViewerWidgetState extends State<StonesViewerWidget> {
   }
 
   Widget _buildStoneWidget(StoneWidgetInfo stone) {
-    print('Draw stone: ${stone.index}');
+//    print('Draw stone: ${stone.index}');
     var deltaRotate;
     if (stone.angleInParent >= stone.oldAngleInParent) {
       deltaRotate = stone.angleInParent - stone.oldAngleInParent;
@@ -73,7 +73,7 @@ class _StonesViewerWidgetState extends State<StonesViewerWidget> {
         cycles: 1,
         builder: (anim) => Transform.rotate(
               angle: anim.value,
-              child: StoneItemWidget(stone),
+              child: StoneItemWidget(stone, rotate: stone.angleInParent,),
               origin: Offset(
                 parentSize.width / 2 - stone.oldPosition.dx,
                 parentSize.height / 2 - stone.oldPosition.dy,
@@ -95,6 +95,18 @@ class _StonesViewerWidgetState extends State<StonesViewerWidget> {
       index += 1;
       stoneInfo.index = index;
 //      stoneInfo.radius = Random().nextDouble() * 10 + 10;
+      stoneInfo.oldAngleInParent = stoneInfo.angleInParent;
+      stoneInfo.parentSize = parentSize;
+      stoneInfo.generatePosition(_braceletRadius);
+      widget.braceletModel.addNewStone(stoneInfo);
+    });
+  }
+
+  void addRandomStoneWithAngel(double angle) {
+    setState(() {
+      var stoneInfo = StoneWidgetInfo();
+      stoneInfo.angleInParent = angle;
+      stoneInfo.index = index;
       stoneInfo.oldAngleInParent = stoneInfo.angleInParent;
       stoneInfo.parentSize = parentSize;
       stoneInfo.generatePosition(_braceletRadius);
