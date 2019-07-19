@@ -157,4 +157,11 @@ class BraceletModel {
       }
     }
   }
+
+  ///Reset animation
+  void resetAnimation() {
+    for (int i = 0; i < stones.length; i++) {
+      stones[i].oldAngleInParent = stones[i].angleInParent;
+    }
+  }
 }
