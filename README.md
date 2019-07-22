@@ -1,6 +1,15 @@
 # flutter_base
 
 A new Flutter application.
+Style guide: https://github.com/flutter/flutter/wiki/Style-guide-for-Flutter-repo
+
+# API
+- https://www.themoviedb.org <br />
+API Key: 26763d7bf2e94098192e629eb975dab0 <br />
+Doc: https://www.themoviedb.org/documentation/api <br />
+#### Example <br />
+https://api.themoviedb.org/3/movie/550?api_key=26763d7bf2e94098192e629eb975dab0
+https://api.themoviedb.org/3/discover/movie?api_key=26763d7bf2e94098192e629eb975dab0
 
 ## Getting Started
 

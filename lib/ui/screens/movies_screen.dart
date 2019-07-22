@@ -9,6 +9,7 @@ import 'package:flutter_base/ui/widgets/cells/movie_cell.dart';
 import 'package:flutter_base/ui/widgets/customs/reload_button_widget.dart';
 import 'package:flutter_base/utilities/app_colors.dart';
 import 'package:flutter_base/utilities/app_dimens.dart';
+import 'package:flutter_base/utilities/app_images.dart';
 
 class MoviesScreen extends StatefulWidget {
   @override
@@ -46,7 +47,10 @@ class _MoviesScreenState extends State<MoviesScreen> {
     return Scaffold(
       appBar: PreferredSize(
         child: AppBar(
-          title: Text('Movies'),
+          title: Text('Movies', style: TextStyle(color: Colors.white),),
+          actions: <Widget>[
+            FlatButton(onPressed: (){}, child: Image.asset(AppImages.icSettingKey))
+          ],
         ),
         preferredSize: Size.fromHeight(AppDimens.appBarHeight),
       ),
