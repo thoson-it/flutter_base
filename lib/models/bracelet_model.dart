@@ -18,9 +18,9 @@ class BraceletModel {
     _updateStonesToIncrease();
     //Thực hiện add stone
     var newStoneIndex = _addStoneToList(stone);
+    _updateStonesToDefaul();
     //Update lại vị trí stone
     _updateStonePosition(newStoneIndex);
-    _updateStonesToDefaul();
     return true;
   }
 
@@ -132,6 +132,9 @@ class BraceletModel {
                 (stones[currentTrackingIndex].occupyAngle +
                         stones[previousTrackingIndex].occupyAngle) /
                     2.0;
+        if (stones[currentTrackingIndex].angleInParent > (2 * pi)) {
+          stones[currentTrackingIndex].angleInParent -= 2 * pi;
+        }
       }
       currentTrackingIndex += 1;
       if (currentTrackingIndex >= stones.length) currentTrackingIndex = 0;
@@ -141,6 +144,16 @@ class BraceletModel {
   //Kiểm tra vị trí hạt phía sau theo chiều kim đồng hồ đang đè lên hạt phía trước
   bool _isStoneOverlapAnother(
       StoneWidgetInfo current, StoneWidgetInfo previous) {
+    if(previous.angleInParent >= previous.oldAngleInParent) {
+      if (current.angleInParent >= previous.oldAngleInParent && current.angleInParent <= previous.angleInParent) {
+        return true;
+      }
+    } else {
+      if (current.angleInParent >= previous.oldAngleInParent || current.angleInParent <= previous.angleInParent) {
+        return true;
+      }
+    }
+
     if (previous.angleInParent <= current.angleInParent) {
       var delta = current.angleInParent - previous.angleInParent;
       if (delta < (previous.occupyAngle / 2 + current.occupyAngle / 2)) {

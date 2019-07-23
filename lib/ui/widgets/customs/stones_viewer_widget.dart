@@ -104,13 +104,18 @@ class _StonesViewerWidgetState extends State<StonesViewerWidget> {
     );
   }
 
-  void removeStoneAtIndex(int index) {
+  StoneWidgetInfo removeStoneAtIndex(int index) {
+    StoneWidgetInfo stone = widget.braceletModel.stones.firstWhere((stone) {
+      return stone.index == index;
+    });
     widget.braceletModel.stones.removeWhere((stone) {
       return stone.index == index;
     });
+    return stone;
   }
 
   var index = 0;
+  var radius = 10.0;
 
   void addRandomStoneWithAngel(double angle) {
     setState(() {
@@ -118,6 +123,20 @@ class _StonesViewerWidgetState extends State<StonesViewerWidget> {
       stoneInfo.angleInParent = angle;
       index += 1;
       stoneInfo.index = index;
+      stoneInfo.radius = (Random().nextDouble() + 1.0) * 10;
+//      stoneInfo.radius = radius;
+//      radius += 5;
+      stoneInfo.oldAngleInParent = stoneInfo.angleInParent;
+      stoneInfo.parentSize = parentSize;
+      stoneInfo.generatePosition(_braceletRadius);
+      widget.braceletModel.addNewStone(stoneInfo);
+    });
+  }
+
+  void addSpecificStoneWithAngel(double angle, StoneWidgetInfo stone) {
+    setState(() {
+      var stoneInfo = stone;
+      stoneInfo.angleInParent = angle;
       stoneInfo.oldAngleInParent = stoneInfo.angleInParent;
       stoneInfo.parentSize = parentSize;
       stoneInfo.generatePosition(_braceletRadius);
@@ -153,8 +172,8 @@ class _StonesViewerWidgetState extends State<StonesViewerWidget> {
         removeStoneAtIndex(stone.index);
       });
     } else {
-      removeStoneAtIndex(stone.index);
-      addRandomStoneWithAngel(angle);
+      final removedStone = removeStoneAtIndex(stone.index);
+      addSpecificStoneWithAngel(angle, removedStone);
     }
   }
 
